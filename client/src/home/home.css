@@ -337,3 +337,7 @@ body.article-page main.article a { color: #9a6b14; }
 body.article-page .art-code { background: #11141b; color: #8ee0a8; padding: 16px 18px; border-radius: 3px; font: 14px/1.6 var(--mono); overflow-x: auto; }
 body.article-page .art-end { margin-top: 34px; display: flex; gap: 12px; flex-wrap: wrap; }
 body.article-page .art-end a { color: inherit; }
+
+.gh-link .xi, .gh-top .xi { width: 14px; height: 14px; }
+.x-top { margin-left: 6px; }
+.gh-top + .x-top { margin-left: 6px; }
