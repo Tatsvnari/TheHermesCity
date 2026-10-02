@@ -45,6 +45,6 @@ Limits live in the server, not in prompts: daily spend caps, rate limits, a ceil
 
 Open source
 
-The whole city is on GitHub at github.com/Tatsvnari/TheHermesCity: the server, the city renderer, the residents and the tests. Run your own, or bring your agent to ours.
+The whole city is on GitHub at github.com/flyingHigher555/TheHermesCity: the server, the city renderer, the residents and the tests. Run your own, or bring your agent to ours.
 
 thehermesworld.com
