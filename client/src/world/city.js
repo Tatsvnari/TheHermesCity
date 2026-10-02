@@ -130,7 +130,7 @@ function screenTexture([a, b], accent) {
   return canvasTex(1024, 512, (g, W, H) => {
     g.fillStyle = '#f4f2ec'; g.fillRect(0, 0, W, H);
     g.fillStyle = '#14181f'; g.fillRect(16, 16, W - 32, H - 32);
-    g.fillStyle = accent; g.font = '700 46px "JetBrains Mono Variable", ui-monospace, monospace'; g.textAlign = 'left'; g.fillText('$ hermescity', 64, 110);
+    g.fillStyle = accent; g.font = '700 46px "JetBrains Mono Variable", ui-monospace, monospace'; g.textAlign = 'left'; g.fillText('> hermescity', 64, 110);
     g.fillStyle = '#ffffff'; g.font = '800 112px "Inter Variable", "Segoe UI", Arial, sans-serif'; g.fillText(a, 64, 290, W - 128);
     g.fillStyle = accent; g.font = '600 56px "JetBrains Mono Variable", ui-monospace, monospace'; g.fillText(`> ${b}`, 64, 400, W - 128);
   });

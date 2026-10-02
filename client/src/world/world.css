@@ -316,7 +316,7 @@ html, body.world { height: 100%; overflow: hidden; background: #0d1017; color: v
 body { font-family: var(--mono); color: var(--ink); }
 .glass { border-radius: var(--radius); }
 .brand, .loader-mark { font-family: var(--mono); font-weight: 700; letter-spacing: -0.01em; }
-.brand::before { content: '$'; color: var(--accent); margin-right: -4px; }
+
 .brand .mark { display: none; }
 .tabs { gap: 2px; padding: 6px; }
 .tabs button { font-family: var(--mono); font-size: 12px; border-radius: 2px; color: var(--ink-2); padding: 7px 4px; }
@@ -344,7 +344,7 @@ code { font-family: var(--mono); background: rgba(20, 24, 31, 0.06); padding: 0 
 /* logo panel: light with a gold wordmark (readable on any background) */
 .brand { background: var(--glass) !important; color: #a8740c !important; border-color: var(--glass-line) !important; }
 .brand .wm2, .brand em { color: #a8740c !important; }
-.brand::before { color: #14181f; }
+
 .tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
 .tabs button { flex: 0 1 auto; font-size: 11.5px; padding: 6px 5px; text-transform: lowercase; white-space: nowrap; }
 .tabs button::before, .tabs button::after { margin: 0 1px; }
@@ -357,3 +357,8 @@ code { font-family: var(--mono); background: rgba(20, 24, 31, 0.06); padding: 0 
 .ins-eyes { display: block; width: 100%; margin: 0 0 10px; padding: 7px; background: #14181f; color: #e0b02a; border: 0; border-radius: 2px; font: 600 12px var(--mono); cursor: pointer; }
 @media (max-width: 820px) { #fp-hud span { display: none; } }
 .loader-mark, .loader-mark .wm2 { color: #e0b02a !important; }
+
+.brandstack { display: flex; gap: 8px; align-items: center; }
+.gh-pill { display: inline-flex; align-items: center; gap: 6px; padding: 9px 12px; color: #14181f; text-decoration: none; font: 600 12px var(--mono); }
+.gh-pill .gh { width: 15px; height: 15px; }
+@media (max-width: 820px) { .gh-pill span { display: none; } }

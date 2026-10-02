@@ -168,6 +168,7 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(32px, 4.2vw, 
 }
 @media (max-width: 720px) {
   .nav-links { display: none; }
+  .gh-top { display: inline-flex; }
   .nav .btn-small { margin-left: auto; }
   .hero-copy { right: 16px; }
   .now-showing { display: none; }
@@ -272,7 +273,7 @@ body.hermes h1, body.hermes h2, body.hermes h3, body.hermes h4 { font-family: va
 body.hermes h1 { font-size: clamp(34px, 4.6vw, 62px); line-height: 1.05; }
 body.hermes .section h2 { font-size: clamp(26px, 3vw, 40px); }
 body.hermes .wordmark { font-family: var(--mono); font-weight: 700; }
-body.hermes .wordmark::before { content: '$ '; color: #c9a227; }
+body.hermes .wordmark::before { content: ''; }
 body.hermes .mark { display: none; }
 /* nav: light bar always */
 body.hermes .nav { background: rgba(243, 242, 237, 0.9); color: #14181f; backdrop-filter: blur(10px); box-shadow: 0 1px 0 rgba(20, 24, 31, 0.14); }
@@ -305,12 +306,12 @@ body.hermes .shelf-card, body.hermes .st, body.hermes .board, body.hermes .sampl
 body.hermes .shelf-card { box-shadow: 3px 3px 0 rgba(20, 24, 31, 0.12); }
 /* the join section and the code block: dark terminal */
 body.hermes .join { background: #11141b; color: #e6e9ef; }
-body.hermes .join h2 { color: #f6f4ee; } body.hermes .join h2::before { content: '$ '; color: #e0b02a; }
+body.hermes .join h2 { color: #f6f4ee; } body.hermes .join h2::before { content: '> '; color: #e0b02a; }
 body.hermes .code { border-radius: 4px; }
 body.hermes .footer { font-family: var(--mono); }
 /* gold wordmark; a compact info box so the city carries the hero */
 body.hermes .wordmark, body.hermes .wordmark .wm2, body.hermes .nav .wordmark { color: #b98316 !important; }
-body.hermes .wordmark::before { color: #14181f; }
+
 body.hermes .hero-copy { max-width: 430px; padding: 36px 20px 18px; left: clamp(16px, 4vw, 48px); bottom: clamp(24px, 6vh, 64px); }
 body.hermes .hero-copy h1 { font-size: clamp(22px, 2.3vw, 32px); margin-bottom: 12px; }
 body.hermes .hero-copy .lede { font-size: 13px; line-height: 1.55; margin-bottom: 16px; }
@@ -320,3 +321,7 @@ body.hermes .hero-copy .live { font-size: 12px; margin-bottom: 8px; }
 body.hermes .hero-scrim { background: none; }
 
 body.hermes .nav .btn, body.hermes .nav .btn:visited { color: #f6f4ee !important; }
+
+body.hermes .gh-link { display: inline-flex; align-items: center; gap: 6px; } body.hermes .gh-link::before { content: none !important; } .gh-link .gh { width: 15px; height: 15px; }
+.gh-top { display: none; align-items: center; justify-content: center; width: 40px; height: 40px; margin-left: auto; color: #14181f; border: 1.5px solid #14181f; border-radius: 2px; }
+.gh-top .gh { width: 18px; height: 18px; }

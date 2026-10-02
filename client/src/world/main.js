@@ -80,33 +80,8 @@ $('lb-chips').onclick = (e) => {
   for (const c of $('lb-chips').children) c.setAttribute('aria-pressed', String(c === b));
   refreshLeaderboard();
 };
-let season = null;
-async function refreshSeason() { return; // HermesCity runs no seasons or giveaways
-  try {
-    season = await api('public/season');
-    const s = season.season; if (!s) return;
-    $('season-banner').hidden = false;
-    $('season-banner').innerHTML = s.scoring === 'points'
-      ? `<span class="clock">${countdown(s.ends_at)}</span><b>Season ${s.id}</b>: ${season.everyone ? 'one race for everyone, agents and people together' : 'a fresh race'}. Points are XP earned this season, each skill counting up to a daily cap, so train every skill every day. ${s.prize_per_winner > 0 ? `The top ${s.winners} each win <b>${fmt(s.prize_per_winner)} $CITY</b>.` : `The top ${s.winners} go into the <b>Hall of Fame</b>.`}`
-      : `<span class="clock">${countdown(s.ends_at)}</span><b>Season ${s.id} giveaway</b>: when it ends, the top ${s.winners} agents by total level each win <b>${fmt(s.prize_per_winner)} $CITY</b>. Free to enter: <code>join</code>, then <code>set_payout_wallet</code>.`;
-    if (lbSkill === 'season') refreshLeaderboard();
-  } catch { /* next time */ }
-}
-$('season-banner').onclick = () => { lbSkill = 'season'; for (const c of $('lb-chips').children) c.setAttribute('aria-pressed', String(c.dataset.skill === 'season')); refreshLeaderboard(); };
+function refreshSeason() {} // HermesCity has no seasons
 async function refreshLeaderboard() {
-  if (lbSkill === 'season') {
-    $('lb-title').textContent = season?.season ? `Season ${season.season.id}` : 'Season';
-    $('lb-sub').textContent = season?.season ? countdown(season.season.ends_at) : '';
-    const prize = new Set(season?.prize_line ?? []);
-    const rows = (season?.standings ?? []).filter((r) => kindOk(r.role));
-    $('lb').innerHTML = rows.length ? rows.map((r, i) => `<li data-id="${r.agent_id}" class="${prize.has(r.agent_id) ? 'prize' : ''}"><span class="rank">${i + 1}</span>
-      <span class="who"><span class="dot" style="background:${colorHex(r.agent_id)}"></span><span style="min-width:0"><span class="name">${esc(r.handle)}${badge(r.role)}</span>
-      <span class="sub">${r.eligible ? (prize.has(r.agent_id) ? `<span class="prize-tag">${season.season.prize_per_winner > 0 ? `${fmt(season.season.prize_per_winner)} $CITY place` : 'Hall of Fame place'}</span>` : 'eligible') : esc(r.reason ?? '')}</span></span></span>
-      <span class="score"><b>${fmt(r.score ?? r.total_level)}</b><span>${season.score_label === 'points' ? 'points' : 'total'}</span></span></li>`).join('')
-      : season?.season ? `<li class="empty" style="display:block;cursor:default">${season.season.scoring === 'points' ? 'No points yet this season. Train any skill and you are on the board.' : 'No agents have entered this season yet. Join with any MCP client, set a payout wallet, and the prize places are open.'}</li>`
-        : '<li class="empty" style="display:block;cursor:default">The season giveaway has ended. The results are on the homepage.</li>';
-    return;
-  }
   const s = SK[lbSkill];
   $('lb-title').textContent = `${lbKind === 'players' ? 'Players · ' : lbKind === 'agents' ? 'Agents · ' : ''}${s ? s.name : 'Overall'}`;
   $('lb-sub').textContent = s ? s.station : `total level across ${stations.length} skills`;
