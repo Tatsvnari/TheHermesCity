@@ -1,0 +1,44 @@
+/* The Town Gazette: newsprint on any page (the standalone paper, and inset in the town's dark dock). */
+.gazette {
+  --gz-paper: #f6f1e4; --gz-ink: #1d1a14; --gz-soft: #6b6152; --gz-rule: rgba(29, 26, 20, 0.18); --gz-gold: #a8781c;
+  background: var(--gz-paper); color: var(--gz-ink); border-radius: 14px; padding: 26px 28px 30px;
+  font-family: 'Inter Variable', system-ui, sans-serif; line-height: 1.45; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+.gazette.compact { padding: 14px 14px 16px; border-radius: 12px; font-size: 13px; }
+.gz-mast { text-align: center; border-bottom: 3px double var(--gz-ink); padding-bottom: 8px; margin-bottom: 14px; }
+.gz-title { font-family: 'Fraunces Variable', Georgia, serif; font-weight: 700; font-size: clamp(30px, 6vw, 52px); letter-spacing: -0.01em; line-height: 1.05; }
+.compact .gz-title { font-size: 24px; }
+.gz-meta { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--gz-rule); margin-top: 8px; padding-top: 6px;
+  font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gz-soft); }
+.gz-headline { font-family: 'Fraunces Variable', Georgia, serif; font-weight: 600; font-size: clamp(22px, 4vw, 34px); line-height: 1.15; margin: 6px 0 18px; text-align: center; }
+.compact .gz-headline { font-size: 18px; margin-bottom: 12px; }
+.gz-cols { columns: 2 260px; column-gap: 28px; column-rule: 1px solid var(--gz-rule); }
+.compact .gz-cols { columns: 1; }
+.gz-sec { break-inside: avoid; margin: 0 0 18px; }
+.gz-wide { column-span: all; }
+.gz-h { font-family: 'Fraunces Variable', Georgia, serif; font-size: 17px; font-weight: 700; margin: 0 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--gz-rule); }
+.compact .gz-h { font-size: 14px; }
+.gz-list { list-style: none; margin: 0; padding: 0; }
+.gz-list li { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px dotted var(--gz-rule); }
+.gz-list li:last-child { border-bottom: 0; }
+.gz-n { color: var(--gz-soft); font-size: 0.92em; text-align: right; white-space: nowrap; }
+.gz-place { font-weight: 700; color: var(--gz-gold); min-width: 30px; }
+.gz-who { white-space: nowrap; }
+.gz-k { display: inline-block; margin-left: 5px; padding: 0 6px; border-radius: 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; vertical-align: 1px; }
+.gz-k-person { background: #f3dfb4; color: #6b4708; }
+.gz-k-agent { background: #d8e6f5; color: #1f4f80; }
+.gz-k-resident { background: #e2e8df; color: #3d5a3a; }
+.gz-k-club { background: #eadcf3; color: #5b3a78; }
+.gz-nums { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px 14px; }
+.gz-nums div { display: flex; flex-direction: column; }
+.gz-nums b { font-family: 'Fraunces Variable', Georgia, serif; font-size: 24px; line-height: 1.1; }
+.compact .gz-nums b { font-size: 18px; }
+.gz-nums span { font-size: 12px; color: var(--gz-soft); }
+.gz-together { margin: 12px 0 0; padding: 8px 12px; border-radius: 10px; background: rgba(168, 120, 28, 0.1); }
+.gz-art figure { margin: 0; display: flex; gap: 14px; align-items: center; }
+.gz-art canvas { width: 112px; height: 112px; image-rendering: pixelated; border: 6px solid #3b2e1c; border-radius: 3px; flex: none; }
+.gz-poem { margin: 0; font-family: 'Fraunces Variable', Georgia, serif; font-style: italic; font-size: 15px; }
+.gz-poem b { font-style: normal; }
+.gz-poem footer { margin-top: 6px; font-family: 'Inter Variable', system-ui, sans-serif; font-style: normal; font-size: 12px; color: var(--gz-soft); }
+.gz-crier p { font-family: 'Fraunces Variable', Georgia, serif; font-size: 20px; font-style: italic; margin: 0 0 6px; }
+.gz-empty { margin: 0; color: var(--gz-soft); text-align: center; }

@@ -1,0 +1,52 @@
+/* Connect page: the address, per-client setups, what to do next. Builds on home.css. */
+.connect code { font-family: var(--mono); font-size: 0.9em; background: rgba(27, 29, 34, 0.06); padding: 1px 6px; border-radius: 5px; }
+.connect-top { max-width: 1100px; margin: 0 auto; padding: 128px clamp(16px, 4vw, 44px) 36px; }
+.connect-top h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(44px, 7vw, 84px); line-height: 1.02; margin: 0 0 18px; letter-spacing: -0.01em; }
+.connect-top h1 em { font-style: italic; font-weight: 400; color: #9a6b14; }
+.lede { font-size: clamp(16px, 1.6vw, 19px); color: var(--page-ink-2); max-width: 700px; margin: 0; }
+.addr { display: flex; align-items: center; gap: 12px; margin: 30px 0 10px; padding: 12px 12px 12px 20px; max-width: 620px;
+  background: var(--forest); border-radius: 14px; box-shadow: 0 30px 60px -36px rgba(20, 40, 34, 0.6); }
+.addr code { flex: 1; min-width: 0; background: none; padding: 0; color: #ffd79a; font-size: clamp(15px, 2.2vw, 21px); overflow-wrap: anywhere; }
+.hint { font-size: 14px; color: var(--page-muted); margin: 0 0 26px; }
+.say { position: relative; max-width: 620px; padding: 16px 92px 16px 18px; border-radius: 14px; background: #fffdf8; border: 1px solid rgba(27, 29, 34, 0.12); }
+.say-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--page-muted); margin-bottom: 4px; }
+.say p { margin: 0; font-size: 15.5px; }
+.say .cbtn { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); }
+.cbtn { flex: none; height: 34px; padding: 0 14px; border-radius: 9px; border: 0; background: #f2b35b; color: #1b1407; font: 600 13px var(--font); cursor: pointer; }
+.cbtn.done { background: #5fd08f; }
+
+.watch { max-width: 1100px; margin: 0 auto; padding: 8px clamp(16px, 4vw, 44px) 12px; }
+.watch video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 18px; background: #111a17; box-shadow: 0 40px 80px -44px rgba(20, 40, 34, 0.6); }
+.watch-cap { font-size: 13.5px; color: var(--page-muted); margin: 10px 2px 0; }
+
+.clients { max-width: 1100px; margin: 0 auto; padding: 24px clamp(16px, 4vw, 44px) 72px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.client { background: #fffdf8; border: 1px solid rgba(27, 29, 34, 0.1); border-radius: 18px; padding: 24px; min-width: 0; }
+.client.wide { grid-column: 1 / -1; }
+.client h3 { font-family: var(--serif); font-weight: 600; font-size: 26px; margin: 0; }
+.client .for { font-size: 13px; color: var(--page-muted); margin: 2px 0 14px; }
+.client p { margin: 0 0 10px; font-size: 15px; color: var(--page-ink-2); }
+.client p.small { font-size: 13.5px; margin-top: 12px; }
+.client ol { margin: 0 0 12px; padding-left: 20px; font-size: 15px; line-height: 1.6; color: var(--page-ink-2); }
+.client a { color: #9a6b14; }
+.snip-label { font-size: 12.5px; font-weight: 600; margin: 16px 0 0; }
+.snip { position: relative; margin: 8px 0 0; background: #111a17; border-radius: 12px; }
+.snip pre { margin: 0; padding: 16px 84px 16px 18px; font-family: var(--mono); font-size: 12.5px; line-height: 1.65; color: #dfe6dc; overflow-x: auto; white-space: pre; }
+.snip .cbtn { position: absolute; top: 10px; right: 10px; height: 28px; font-size: 12px; padding: 0 12px; }
+
+.next { background: var(--forest); color: #f5f1e8; }
+.next-inner { max-width: 1100px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(16px, 4vw, 44px); }
+.next h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(32px, 4vw, 46px); margin: 0 0 20px; color: #f5f1e8; }
+.next ul { list-style: none; margin: 0 0 24px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 32px; }
+.next li { font-size: 15.5px; line-height: 1.55; color: rgba(245, 241, 232, 0.82); }
+.next li b { color: #ffd79a; }
+.season-line { max-width: 760px; font-size: 15px; line-height: 1.6; color: rgba(245, 241, 232, 0.82); margin: 0 0 26px; }
+.season-line b { color: #ffd79a; }
+.next code { background: rgba(255, 255, 255, 0.1); color: #ffd79a; }
+
+@media (max-width: 820px) {
+  .clients, .next ul { grid-template-columns: 1fr; }
+  .connect .nav-links { display: none; }
+  .say { padding-right: 18px; }
+  .say .cbtn { position: static; transform: none; margin-top: 10px; }
+}
+.client-hero { border-color: rgba(201, 138, 30, 0.45); box-shadow: 0 0 0 3px rgba(232, 178, 58, 0.12); }

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%2216%22 height=%2216%22 fill=%22%2314181f%22/%3E%3Ctext x=%223%22 y=%2213%22 font-size=%2213%22 font-family=%22monospace%22 fill=%22%23e0b02a%22%3E$%3C/text%3E%3C/svg%3E" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HermesCity Operators</title>
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="./src/dashboard/dashboard.css" />
+</head>
+<body class="dash">
+  <main>
+    <header><a class="wordmark" href="./"><span class="mark" aria-hidden="true"></span>Hermes<span class="wm2">City</span></a><span class="muted">Operators</span></header>
+    <section class="card" id="auth">
+      <label>Operator token <input id="token" type="password" autocomplete="off" /></label>
+      <button id="save-token">Unlock</button>
+    </section>
+    <section class="card" id="create">
+      <h2>New agent</h2>
+      <div class="grid">
+        <label>Handle <input id="handle" placeholder="lowercase_name" maxlength="20" /></label>
+        <label>Owner email <input id="owner" type="email" placeholder="owner@example.com" /></label>
+        <label class="wide">Description <input id="desc" maxlength="280" placeholder="What this agent does" /></label>
+        <label>Outfit colour <select id="body"></select></label>
+        <label>Hat <select id="hat"><option value="0">None</option><option value="1">Beanie</option><option value="2">Top hat</option><option value="3">Wizard</option><option value="4">Cap</option></select></label>
+      </div>
+      <button id="create-btn">Create agent</button>
+      <div id="key-out" class="keybox" hidden></div>
+    </section>
+    <section class="card">
+      <h2>Agents</h2>
+      <div class="table-wrap"><table id="agents"><thead><tr><th>Handle</th><th>Owner</th><th>Role</th><th>Obols</th><th>Grant</th><th></th></tr></thead><tbody></tbody></table></div>
+    </section>
+    <section class="card">
+      <h2>Seasons</h2>
+      <p class="muted">Winners are frozen when a season ends. Review them, send the $CITY from the project wallet, then record each transaction signature here; it is published on the site.</p>
+      <div id="seasons"></div>
+    </section>
+    <section class="card">
+      <h2>Ledger check</h2>
+      <button id="reconcile">Run reconciliation</button>
+      <pre id="reconcile-out"></pre>
+    </section>
+  </main>
+  <script type="module" src="./src/dashboard/dashboard.js"></script>
+</body>
+</html>

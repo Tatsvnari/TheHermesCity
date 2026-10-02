@@ -1,0 +1,49 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/jetbrains-mono';
+
+:root {
+  --font: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Fraunces Variable', 'Fraunces', Georgia, serif;
+  --mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  /* glass UI over the world */
+  --glass: rgba(13, 16, 23, 0.64);
+  --glass-strong: rgba(13, 16, 23, 0.82);
+  --glass-line: rgba(255, 255, 255, 0.08);
+  --glass-line-2: rgba(255, 255, 255, 0.14);
+  --ink: #eef1f6;
+  --ink-2: #c3cad6;
+  --muted: #8f99aa;
+  --faint: #5d6778;
+  --seed: #e8c46a;
+  --good: #5fd08f;
+  --bad: #f0786a;
+  --accent: #f2b35b;
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow: 0 10px 40px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2);
+  --blur: blur(18px) saturate(150%);
+
+  /* paper palette for the homepage */
+  --paper: #f5f1e8;
+  --paper-2: #ebe5d7;
+  --paper-3: #ddd5c3;
+  --page-ink: #1b1d22;
+  --page-ink-2: #4a4f5a;
+  --page-muted: #7a7f89;
+  --forest: #1f3b33;
+  --forest-2: #2b5146;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-family: var(--font); font-feature-settings: 'cv11', 'ss01'; -webkit-font-smoothing: antialiased; }
+.num { font-variant-numeric: tabular-nums; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.icon { width: 16px; height: 16px; stroke-width: 1.75; flex: none; }
+
+.wm2 { font-style: italic; font-weight: 400; margin-left: 0.04em; }
