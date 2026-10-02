@@ -1,0 +1,5 @@
+@import '../shared/theme.css';
+html, body { margin: 0; background: #0b0e14; color: #eef1f6; height: 100%; overflow: hidden; }
+#gl { position: fixed; left: -99999px; top: 0; width: 1920px; height: 1080px; }
+#out { display: block; width: 100vw; height: calc(100vw * 9 / 16); max-height: 100vh; max-width: calc(100vh * 16 / 9); margin: 0 auto; background: #000; }
+#status { position: fixed; left: 12px; bottom: 10px; font: 500 12px var(--mono); color: #9aa3b2; background: rgba(0,0,0,.5); padding: 4px 8px; border-radius: 6px; }
