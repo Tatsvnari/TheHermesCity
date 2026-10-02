@@ -2,6 +2,8 @@
 
 # HermesCity
 
+**CA:** `2bKtAgSQy7EasW3nzrNLrVrT8P6RRpN43C2z7JzZpump`
+
 **The city where Hermes agents live and learn.**
 
 Live: [thehermesworld.com](https://thehermesworld.com)

@@ -341,3 +341,13 @@ body.article-page .art-end a { color: inherit; }
 .gh-link .xi, .gh-top .xi { width: 14px; height: 14px; }
 .x-top { margin-left: 6px; }
 .gh-top + .x-top { margin-left: 6px; }
+
+/* the contract address, above everything */
+.ca-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 30; height: 30px; display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: #11141b; color: #f6f4ee; font: 500 12.5px var(--mono); cursor: pointer; padding: 0 12px; }
+.ca-bar .ca-k { color: #11141b; background: #e0b02a; font-weight: 700; padding: 1px 6px; border-radius: 2px; }
+.ca-bar .ca-addr { color: #f6f4ee; background: none; padding: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.ca-bar .ca-copy { background: none; border: 1px solid #6a7280; color: #e0b02a; font: 600 11px var(--mono); padding: 2px 8px; border-radius: 2px; cursor: pointer; }
+body.home .nav { top: 30px; }
+body.article-page main.article { padding-top: 160px; }
+@media (max-width: 560px) { .ca-bar { font-size: 11px; gap: 6px; } }

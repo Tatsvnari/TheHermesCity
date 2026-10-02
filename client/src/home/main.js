@@ -1,3 +1,4 @@
+import '../shared/ca.js';
 import './home.css';
 import { api, esc, fmt, skillIcon, pct, countdown } from '../shared/common.js';
 

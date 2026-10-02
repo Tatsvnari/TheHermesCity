@@ -364,3 +364,9 @@ code { font-family: var(--mono); background: rgba(20, 24, 31, 0.06); padding: 0 
 @media (max-width: 820px) { .gh-pill span { display: none; } }
 
 .gh-pill .xi { width: 14px; height: 14px; }
+
+/* HermesCity CA pill beside the logo */
+.ca-pill { display: inline-flex; align-items: center; gap: 7px; padding: 9px 12px; color: #14181f; font: 500 12px var(--mono); cursor: pointer; border: 1px solid var(--glass-line); }
+.ca-pill b { background: #e0b02a; color: #14181f; padding: 0 5px; border-radius: 2px; }
+.ca-pill .ca-copy { color: #a8740c; font-weight: 600; }
+@media (max-width: 820px) { .ca-pill .ca-copy { display: none; } }

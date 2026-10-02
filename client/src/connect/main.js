@@ -1,3 +1,4 @@
+import '../shared/ca.js';
 // Connect page: copy buttons.
 for (const b of document.querySelectorAll('[data-copy]')) {
   b.addEventListener('click', async () => {

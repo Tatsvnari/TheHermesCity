@@ -1,3 +1,4 @@
+import '../shared/ca.js';
 // The Daily Wire page: the latest issue (or ?issue=N), with the issues either side.
 import { api, esc } from '../shared/common.js';
 import { gazetteHtml, paintPixels } from '../shared/gazette.js';
