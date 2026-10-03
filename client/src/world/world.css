@@ -355,7 +355,7 @@ code { font-family: var(--mono); background: rgba(20, 24, 31, 0.06); padding: 0 
 .fp-stick { position: fixed; width: 100px; height: 100px; border-radius: 50%; border: 2px solid rgba(246, 244, 238, 0.6); background: rgba(20, 24, 31, 0.2); z-index: 6; pointer-events: none; }
 .fp-knob { position: absolute; left: 30px; top: 30px; width: 40px; height: 40px; border-radius: 50%; background: rgba(246, 244, 238, 0.85); }
 .ins-eyes { display: block; width: 100%; margin: 0 0 10px; padding: 7px; background: #14181f; color: #e0b02a; border: 0; border-radius: 2px; font: 600 12px var(--mono); cursor: pointer; }
-@media (max-width: 820px) { #fp-hud span { display: none; } }
+@media (max-width: 820px) { #fp-hud { font-size: 11px; bottom: 74px; } }
 .loader-mark, .loader-mark .wm2 { color: #e0b02a !important; }
 
 .brandstack { display: flex; gap: 8px; align-items: center; }
@@ -370,3 +370,78 @@ code { font-family: var(--mono); background: rgba(20, 24, 31, 0.06); padding: 0 
 .ca-pill b { background: #e0b02a; color: #14181f; padding: 0 5px; border-radius: 2px; }
 .ca-pill .ca-copy { color: #a8740c; font-weight: 600; }
 @media (max-width: 820px) { .ca-pill .ca-copy { display: none; } }
+
+/* phones: the street gets the screen. One compact top row, controls tucked under it, a short chat, the hint up top */
+@media (max-width: 820px) {
+  .topbar { flex-wrap: nowrap; gap: 6px; top: 8px; left: 8px; right: 8px; }
+  .brandstack { gap: 6px; min-width: 0; }
+  .brand { padding: 7px 10px; font-size: 14px; }
+  .stats { display: none; }
+  .gh-pill { padding: 8px 9px; } .gh-pill span { display: none; }
+  .ca-pill { height: 32px; padding: 0 8px; font-size: 11px; white-space: nowrap; }
+  .controls { top: 52px; bottom: auto; right: 8px; left: auto; padding: 3px; }
+  .controls button { height: 30px; min-width: 30px; padding: 0 7px; font-size: 11.5px; }
+  .controls button span { display: none; }
+  #fp-hud { top: 94px; bottom: auto; left: 8px; transform: none; font-size: 11px; padding: 6px 9px; }
+  .mc-chat { bottom: 66px; }
+  .mc-chat ol { max-height: 16vh; }
+  .mc-chat li { font-size: 11.5px; padding: 2px 7px; }
+}
+
+/* faded chat lines never catch a tap meant for the street */
+.mc-chat li.faded { pointer-events: none; }
+.mc-chat:not(.open) { pointer-events: none; }
+.mc-chat:not(.open) li:not(.faded) { pointer-events: auto; }
+/* the way in: blocky type, a segmented bar, and the pixel dissolve (main.js pixelIn) */
+.loader { background: #11141b !important; transition: none !important; }
+.loader.done { opacity: 0; visibility: hidden; }
+.loader-mark { font-size: 46px; text-shadow: 3px 3px 0 #6b4e0c; image-rendering: pixelated; }
+.loader-sub { font-family: var(--mono); font-weight: 700; font-size: 13px; letter-spacing: 0.3em; color: #f6f4ee; }
+.loader-bar { width: 224px; height: 14px; border-radius: 0; background: none; border: 2px solid #e0b02a; padding: 2px; box-sizing: border-box; }
+.loader-bar i { width: 100%; height: 100%; border-radius: 0; animation: blocks 1.4s steps(8, end) infinite;
+  background: repeating-linear-gradient(90deg, #e0b02a 0 22px, transparent 22px 26px); transform-origin: left; }
+@keyframes blocks { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.pixel-in { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 21; pointer-events: none; image-rendering: pixelated; }
+
+/* ================= player screen cleanup: nothing covers anything ================= */
+.ticker { display: none !important; }
+.dock { top: 70px; width: 344px; max-height: calc(100vh - 150px); }
+.tabs { display: flex; align-items: center; gap: 2px; padding: 5px; height: auto; overflow: hidden; flex-wrap: nowrap; }
+.tabs button { flex: 1 1 0; min-width: 0; padding: 7px 2px; font-size: 11px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: clip; }
+.tabs button::before, .tabs button::after { content: none !important; }
+.tabs button[aria-selected='true']::before { content: '> ' !important; color: #a8740c; }
+.dock-min { flex: 0 0 26px; height: 26px; margin-left: 2px; border: 0; border-radius: 2px; background: #2a2f39; color: #e0b02a; font: 700 15px/1 var(--mono); cursor: pointer; }
+.dock-min:hover { background: #3a414d; }
+.dock.min { max-height: none; }
+.dock.min > section { display: none !important; }
+/* leaderboard rows: one tidy line each */
+.lb li { padding: 6px 8px; gap: 8px; border-radius: 2px; }
+.lb .name { display: flex; align-items: baseline; gap: 6px; font-size: 13px; }
+.lb .badge { font-size: 9.5px; letter-spacing: 0.06em; opacity: 0.75; }
+.lb .sub { display: block; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lb .score span { font-size: 10px; }
+/* the walking hint lives up top, under the stats, clear of the controls */
+#fp-hud { top: 84px; bottom: auto; }
+/* bring your agent: CLI style */
+.controls .join { background: #14181f; color: #e0b02a; border-radius: 2px; font-family: var(--mono); }
+.controls .join::before { content: '[ '; } .controls .join::after { content: ' ]'; }
+.controls button { border-radius: 2px; font-family: var(--mono); }
+@media (max-width: 820px) {
+  .dock { top: auto; width: auto; }
+  .dock-min { display: none; }
+  .controls { max-width: calc(100vw - 16px); }
+  #btn-quality, #btn-full { display: none !important; }
+  #fp-hud { top: 94px; left: 8px; right: 8px; max-width: calc(100vw - 16px); overflow: hidden; text-overflow: ellipsis; }
+}
+.dock { width: 372px; }
+.tabs button { font-size: 11px; padding: 7px 1px; }
+.tabs button[aria-selected='true']::before { content: none !important; }
+@media (min-width: 821px) { .mc-chat { left: 400px; width: min(520px, calc(100vw - 840px)); } }
+.tabs button { font-size: 10.5px; letter-spacing: -0.02em; }
+/* phones: the controls that matter, with their words: play and map */
+@media (max-width: 820px) {
+  .controls { display: flex; width: auto; min-width: 0; }
+  .controls button span { display: inline !important; }
+  .controls .join, #btn-quality, #btn-full, .controls .snd { display: none !important; }
+}
+@media (max-width: 820px) { .controls { left: 8px !important; right: auto !important; top: 52px !important; max-width: calc(100vw - 16px); } }

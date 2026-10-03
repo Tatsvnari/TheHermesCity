@@ -1,6 +1,6 @@
 // First person: the way into HermesCity. Walk at eye height with WASD (or the arrow keys), look with the mouse (click to
-// lock, Esc to unlock) or by dragging, Shift to run. On a touch screen a stick on the left walks and a drag on the right
-// looks. Buildings, stalls, the fountain and the townhouses are solid. "Through their eyes" puts the camera behind any
+// lock, Esc to unlock) or by dragging, Shift to run. On a touch screen (and with a mouse) a tap on the
+// ground walks you there and a drag looks. Buildings, stalls, the fountain and the townhouses are solid. "Through their eyes" puts the camera behind any
 // agent's eyes and walks with them; a person playing walks as themselves.
 import * as THREE from 'three';
 import { placeAt as blockPlace, PITCH, EDGE, DT_EDGE } from './layout.js';
@@ -20,7 +20,7 @@ export class FirstPerson {
   constructor(camera, canvas, solids) {
     this.camera = camera; this.canvas = canvas;
     this.pos = new THREE.Vector3(); this.yaw = 0; this.pitch = 0; this.bob = 0; this.moved = 0;
-    this.keys = new Set(); this.stick = null; this.look = null; this.active = false; this.onChange = null; this.onStep = null;
+    this.keys = new Set(); this.stick = null; this.look = null; this.goal = null; this.stuck = 0; this.active = false; this.onChange = null; this.onStep = null;
     this.cells = new Map(); this.circles = [];
     for (const s of solids) {
       if ('r' in s) { this.circles.push(s); continue; }
@@ -49,18 +49,11 @@ export class FirstPerson {
     this.onTouch = (e) => {
       if (!this.active) return;
       for (const t of e.changedTouches) {
-        if (e.type === 'touchstart') {
-          if (t.clientX < innerWidth * 0.45 && !this.stick) { this.stick = { id: t.identifier, x: t.clientX, y: t.clientY, dx: 0, dy: 0 }; this.drawStick(); }
-          else if (!this.look) this.look = { id: t.identifier, x: t.clientX, y: t.clientY };
-        } else if (e.type === 'touchmove') {
-          if (this.stick?.id === t.identifier) { this.stick.dx = Math.max(-60, Math.min(60, t.clientX - this.stick.x)); this.stick.dy = Math.max(-60, Math.min(60, t.clientY - this.stick.y)); this.drawStick(); }
-          else if (this.look?.id === t.identifier) { this.turn((t.clientX - this.look.x) * 1.6, (t.clientY - this.look.y) * 1.6); this.look.x = t.clientX; this.look.y = t.clientY; }
-        } else {
-          if (this.stick?.id === t.identifier) { this.stick = null; this.drawStick(); }
-          if (this.look?.id === t.identifier) this.look = null;
-        }
+        if (e.type === 'touchstart') { if (!this.look) this.look = { id: t.identifier, x: t.clientX, y: t.clientY }; }
+        else if (e.type === 'touchmove') { if (this.look?.id === t.identifier) { this.turn((t.clientX - this.look.x) * 1.6, (t.clientY - this.look.y) * 1.6); this.look.x = t.clientX; this.look.y = t.clientY; } }
+        else if (this.look?.id === t.identifier) this.look = null;
       }
-      e.preventDefault();
+      if (e.type === 'touchmove') e.preventDefault();
     };
     addEventListener('keydown', this.onKey); addEventListener('keyup', this.onKey);
     addEventListener('pointermove', this.onMouse);
@@ -91,6 +84,9 @@ export class FirstPerson {
     return [0, 30];
   }
 
+  /** Walk to a point (a tap or a click on the ground). Keys or a new tap take over. */
+  walkTo(x, z) { this.goal = { x, z }; this.stuck = 0; }
+
   start({ x = 0, z = 15, yaw = 0, pitch = 0.08 } = {}) {
     const [fx, fz] = this.free(x, z);
     this.pos.set(fx, EYE, fz); this.yaw = yaw; this.pitch = pitch; this.active = true; this.keys.clear(); this.lastPlace = null;
@@ -109,6 +105,16 @@ export class FirstPerson {
     if (turnKeys) this.yaw -= turnKeys * 1.8 * dt;
     let fwd = f, mag = 1;
     if (this.stick) { fwd = -this.stick.dy / 60; s = this.stick.dx / 60; mag = Math.min(1, Math.hypot(fwd, s)); }
+    if (f || s || turnKeys) this.goal = null; // keys take over from a tap
+    if (this.goal && !f && !s) {               // walking to a tapped spot: turn toward it and go
+      const dx = this.goal.x - this.pos.x, dz = this.goal.z - this.pos.z, d = Math.hypot(dx, dz);
+      if (d < 0.6 || this.stuck > 40) { this.goal = null; this.onArrive?.(); }
+      else {
+        const want = Math.atan2(-dx, -dz); let diff = want - this.yaw; diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+        this.yaw += diff * Math.min(1, dt * 6);
+        fwd = Math.abs(diff) < 1.2 ? Math.min(1, d / 1.5 + 0.35) : 0;
+      }
+    }
     const speed = k.has('ShiftLeft') || k.has('ShiftRight') || (mag > 0.92 && this.stick) ? RUN : WALK;
     const len = Math.hypot(fwd, s);
     if (len > 0.05) {
@@ -117,6 +123,7 @@ export class FirstPerson {
       const x0 = this.pos.x, z0 = this.pos.z;
       if (!this.blocked(this.pos.x + vx, this.pos.z)) this.pos.x += vx;
       if (!this.blocked(this.pos.x, this.pos.z + vz)) this.pos.z += vz;
+      this.stuck = Math.hypot(this.pos.x - x0, this.pos.z - z0) < speed * dt * 0.2 ? this.stuck + 1 : 0;
       this.moved += Math.hypot(this.pos.x - x0, this.pos.z - z0);
       this.bob += dt * (speed > WALK ? 11 : 8);
     } else if (this.moved > 0) { this.onStep?.(this.pos.x, this.pos.z); this.moved = 0; } // stopped: tell the city where you are

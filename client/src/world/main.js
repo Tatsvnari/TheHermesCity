@@ -17,7 +17,7 @@ const view = await createView($('scene'), {
   onConnection: (up) => { $('conn').hidden = up; },
 });
 const { engine, crowd, stations } = view;
-if (import.meta.env.VITE_STAGING) window.__view = view; // staging builds only: lets review captures point the camera
+window.__hc = { pos: () => ({ x: +view.fp.pos.x.toFixed(2), z: +view.fp.pos.z.toFixed(2), mode: view.mode() }) }; // read-only probe for checks
 const SK = Object.fromEntries(stations.map((s) => [s.skill, s]));
 const skillName = (id) => SK[id]?.name ?? id;
 let activeTab = 'leaderboard';
@@ -51,6 +51,11 @@ for (const b of document.querySelectorAll('.tabs button')) {
   };
 }
 $('dock-handle').onclick = () => $('dock').classList.toggle('open');
+// minimise to just the tab bar (remembered); picking a tab opens it again
+const setMin = (on) => { $('dock').classList.toggle('min', on); $('dock-min').textContent = on ? '+' : '–'; $('dock-min').title = on ? 'Open the panel' : 'Minimise'; storage('hc_dock_min', on ? '1' : null); };
+$('dock-min').onclick = () => setMin(!$('dock').classList.contains('min'));
+document.querySelector('.tabs').addEventListener('click', (e) => { if (e.target.closest('[data-tab]') && $('dock').classList.contains('min')) setMin(false); });
+if (storage('hc_dock_min') === '1') setMin(true);
 
 // ---------- stats + clock ----------
 async function refreshStats() {
@@ -295,7 +300,7 @@ function project(x, y, z) {
 function updateTags() {
   const cam = engine.camera.position, now = performance.now();
   const seen = new Set();
-  const ordered = [...crowd.agents.values()].filter((s) => s.act !== 'home').map((s) => [s, Math.hypot(s.x - cam.x, s.z - cam.z, 2 - cam.y)]).filter(([, d]) => d < 85).sort((a, b) => a[1] - b[1]).slice(0, 50);
+  const ordered = [...crowd.agents.values()].filter((s) => s.act !== 'home').map((s) => [s, Math.hypot(s.x - cam.x, s.z - cam.z, 2 - cam.y)]).filter(([, d]) => d < (view.mode?.() === 'map' ? 85 : 30)).sort((a, b) => a[1] - b[1]).slice(0, view.mode?.() === 'map' ? 50 : 12) // first person: only the dozen people near you;
   for (const [s, d] of ordered) {
     const p = project(s.head.x, s.head.y, s.head.z); if (!p) continue;
     seen.add(s.id);
@@ -361,7 +366,7 @@ const drawHud = (place) => {
   const m = view.mode();
   fpHud.hidden = m === 'map';
   fpHud.innerHTML = m === 'eyes' ? `<b>&gt; through ${esc(crowd.agents.get(view.director.ride)?.handle ?? 'their')}'s eyes</b><span>[esc] or [m] to step out</span>`
-    : `<b>&gt; ${esc(place ?? view.fp.lastPlace ?? 'Market Square')}</b><span>wasd walk · shift run · drag look · double-click lock mouse · m map</span>`;
+    : `<b>&gt; ${esc(place ?? view.fp.lastPlace ?? 'Market Square')}</b><span>${matchMedia('(pointer: coarse)').matches ? 'tap to walk · drag to look' : 'click or wasd to walk · drag to look · m map'}</span>`;
 };
 view.fp.onChange = drawHud; view.onMode = () => { drawHud(); renderControls(); };
 addEventListener('keydown', (e) => { if (e.code === 'Escape' && view.mode() === 'eyes') view.setMode('walk'); });
@@ -413,7 +418,30 @@ setInterval(refreshSeason, 60000);
 setInterval(refreshStats, 10000); setInterval(refreshLeaderboard, 20000); setInterval(renderSkillCards, 60000);
 if (params.get('agent')) select(params.get('agent'));
 if (SK[params.get('station')]) visit(SK[params.get('station')]);
-requestAnimationFrame(() => setTimeout(() => $('loader').classList.add('done'), 350));
+// the way in: the loading screen breaks into big pixels that shrink away from the centre, 64-bit style
+function pixelIn() {
+  const L = $('loader'), cv = document.createElement('canvas'), dpr = 1, W = innerWidth, H = innerHeight;
+  cv.width = W * dpr; cv.height = H * dpr; cv.className = 'pixel-in'; document.body.append(cv);
+  const g = cv.getContext('2d'), T = Math.max(28, Math.round(Math.min(W, H) / 14)), cols = Math.ceil(W / T), rows = Math.ceil(H / T);
+  const cx = cols / 2, cy = rows / 2, maxD = Math.hypot(cx, cy), tiles = [];
+  for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) tiles.push({ x, y, at: (Math.hypot(x + 0.5 - cx, y + 0.5 - cy) / maxD) * 0.75 + Math.random() * 0.25 });
+  L.classList.add('done');
+  const t0 = performance.now(), DUR = 950;
+  const draw = (now) => {
+    const k = (now - t0) / DUR;
+    g.clearRect(0, 0, cv.width, cv.height);
+    for (const t of tiles) {
+      const life = Math.min(1, Math.max(0, (k - t.at * 0.8) / 0.22)); // each tile: full, then shrinks to nothing
+      if (life >= 1) continue;
+      const sz = Math.ceil(T * (1 - life) / 4) * 4, off = (T - sz) / 2;     // shrink in 4 px steps: chunky, never smooth
+      g.fillStyle = life > 0.5 ? '#e0b02a' : '#11141b';                    // a gold flash on the way out
+      g.fillRect(t.x * T + off, t.y * T + off, sz, sz);
+    }
+    if (k < 1.25) requestAnimationFrame(draw); else cv.remove();
+  };
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(() => setTimeout(pixelIn, 350));
 
 // ---------- play mode (when the city has it open) ----------
 function leaderboardKinds(on) { // Everyone | Agents | Players: one board, filtered

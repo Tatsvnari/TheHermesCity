@@ -34,6 +34,10 @@ export async function createView(canvas, opts = {}) {
   // first person: the solids are every building, stall and townhouse downtown plus every tower lot outside it
   const solids = [...town.solids, ...city.plan.lots.map((l) => ({ x0: l.x - l.w / 2, x1: l.x + l.w / 2, z0: l.z - l.d / 2, z1: l.z + l.d / 2 }))];
   const fp = new FirstPerson(engine.camera, canvas, solids);
+  // where a tap or a click sends you: a gold ring that fades as you get there
+  const marker = new THREE.Mesh(new THREE.RingGeometry(0.45, 0.7, 32).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#e0b02a', transparent: true, opacity: 0, depthWrite: false }));
+  engine.scene.add(marker);
+  fp.onArrive = () => { marker.material.opacity = 0; };
   const lodging = feats.homes ? town.lodging : null;
   let homeGlows = [];
   const homeColor = (id, avatar) => (avatar && Number.isInteger(avatar.body) ? PALETTE[avatar.body] : PALETTE[hashStr(id) % 16]);
@@ -130,7 +134,11 @@ export async function createView(canvas, opts = {}) {
     view.onSelect?.(id);
     if (!id && director.mode === 'walk') { // in first person a click on a station opens it; walking is by keys
       const hit = new THREE.Vector3();
-      if (ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), hit)) { const st = stations.find((s) => s.trainable && Math.hypot(s.x - hit.x, s.z - hit.z) < 12); if (st) view.onStation?.(st); }
+      if (ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), hit)) {
+        const st = view.me ? stations.find((s) => s.trainable && Math.hypot(s.x - hit.x, s.z - hit.z) < 9) : null;
+        if (st && view.onStation?.(st)) return;
+        if (Math.hypot(hit.x - fp.pos.x, hit.z - fp.pos.z) < 160) { fp.walkTo(hit.x, hit.z); marker.position.set(hit.x, 0.09, hit.z); marker.scale.setScalar(1); marker.material.opacity = 0.9; }
+      }
     } else if (!id && view.onGround) { // play mode: a click on the ground is a place to walk to
       const hit = new THREE.Vector3();
       if (ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), hit)) view.onGround(hit.x, hit.z);
@@ -193,6 +201,7 @@ export async function createView(canvas, opts = {}) {
       }
     }
 
+    if (marker.material.opacity > 0) { marker.material.opacity = Math.max(0, marker.material.opacity - dt * 0.35); marker.scale.multiplyScalar(1 + dt * 0.25); }
     if (director.mode === 'walk') { fp.update(dt); engine.focus.set(fp.pos.x, 0, fp.pos.z); opts.onFrame?.(dt, t); return; }
     if (director.mode === 'eyes') {
       const s = crowd.agents.get(director.ride);

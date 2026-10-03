@@ -28,7 +28,8 @@ if [ ! -f "$ENV_FILE" ]; then
 fi
 
 chown -R "$APP_USER:$APP_USER" "$APP_DIR"
-(cd client && as_app npm install --no-audit --no-fund --loglevel=error && as_app npx vite build --logLevel warn)
+# build beside the live site, then swap in one rename: the pages are never missing mid-deploy
+(cd client && as_app npm install --no-audit --no-fund --loglevel=error && rm -rf dist.next && as_app npx vite build --outDir dist.next --emptyOutDir --logLevel warn   && rm -rf dist.old && { [ ! -d dist ] || mv dist dist.old; } && mv dist.next dist && rm -rf dist.old)
 
 HARDEN="NoNewPrivileges=true
 PrivateTmp=true
